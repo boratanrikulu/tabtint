@@ -4,8 +4,11 @@ Automatic terminal tab coloring based on the running command.
 
 Type `ssh` and the tab turns red. Run `kubectl` and it turns teal. When the command finishes, the color resets. No manual setup per-tab - just a simple config file.
 
-<!-- TODO: add GIF demo here -->
-<!-- ![tabtint demo](demo.gif) -->
+
+
+https://github.com/user-attachments/assets/ed37cdd8-be01-4412-9051-f3fc27b0562d
+
+
 
 ## Supported Terminals
 
