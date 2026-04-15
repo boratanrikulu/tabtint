@@ -70,7 +70,9 @@ _TABTINT_CONF="${TABTINT_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/tabtint/confi
 _TABTINT_DIR="${0:A:h}"
 
 typeset -gA _tabtint_rules
+typeset -gA _tabtint_transient
 typeset -ga _tabtint_default_rgb
+typeset -g  _tabtint_active_transient=""
 
 # Parse color string → sets _r _g _b
 _tabtint_parse_color() {
@@ -102,10 +104,11 @@ _tabtint_parse_color() {
 
 _tabtint_load() {
     _tabtint_rules=()
+    _tabtint_transient=()
     _tabtint_default_rgb=()
     [[ -f "$_TABTINT_CONF" ]] || return
 
-    local line key val _r _g _b color_name
+    local line key val _r _g _b color_name transient
     while IFS= read -r line || [[ -n "$line" ]]; do
         [[ "$line" =~ ^[[:space:]]*# ]] && continue
         [[ "$line" =~ ^[[:space:]]*$ ]] && continue
@@ -132,9 +135,17 @@ _tabtint_load() {
             continue
         fi
 
+        # Check for ! suffix (transient - color only while running)
+        transient=0
+        if [[ "$val" == *'!' ]]; then
+            transient=1
+            val="${val%!}"
+        fi
+
         # command = color → tab color rule
         if _tabtint_parse_color "$val"; then
             _tabtint_rules[$key]="$_r $_g $_b"
+            (( transient )) && _tabtint_transient[$key]=1
         fi
     done < "$_TABTINT_CONF"
 }
@@ -159,15 +170,26 @@ _tabtint_preexec() {
     local rgb="${_tabtint_rules[$cmd]}"
     if [[ -n "$rgb" ]]; then
         _tabtint_set ${=rgb}
-    elif (( ${#_tabtint_default_rgb} == 3 )); then
-        _tabtint_set "${_tabtint_default_rgb[@]}"
+        # track if this command should reset on exit
+        if [[ -n "${_tabtint_transient[$cmd]}" ]]; then
+            _tabtint_active_transient=1
+        else
+            _tabtint_active_transient=""
+        fi
     else
-        _tabtint_reset
+        _tabtint_active_transient=""
     fi
 }
 
 _tabtint_precmd() {
-    # no-op: color persists until the next command
+    # only reset if the last command was transient (color!)
+    [[ -n "$_tabtint_active_transient" ]] || return
+    _tabtint_active_transient=""
+    if (( ${#_tabtint_default_rgb} == 3 )); then
+        _tabtint_set "${_tabtint_default_rgb[@]}"
+    else
+        _tabtint_reset
+    fi
 }
 
 # ── Public commands ──────────────────────────────────────────────
@@ -235,7 +257,8 @@ Config: $_TABTINT_CONF
   Override with: export TABTINT_CONFIG=/path/to/config
 
 Config format:
-  command = color        Set tab color when command runs
+  command = color        Set tab color (persists after command exits)
+  command = color!       Set tab color (resets when command exits)
   default = color        Set idle tab color (instead of terminal default)
   @name   = value        Define a custom color name
 

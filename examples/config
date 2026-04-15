@@ -1,7 +1,8 @@
 # tabtint config
 #
 # Format:
-#   command = color        color the tab when this command runs
+#   command = color        color the tab when this command runs (persists)
+#   command = color!       color the tab only while the command runs (resets on exit)
 #   default = color        idle tab color (omit to use terminal default)
 #   @name   = value        define a custom color name
 #
@@ -22,15 +23,15 @@
 # default = graphite
 
 # ── Remote access ───────────────────────────────────────────────
-ssh       = red
-mosh      = red
-telnet    = red
+ssh       = red!
+mosh      = red!
+telnet    = red!
 
 # ── Containers & orchestration ──────────────────────────────────
 docker    = teal
 podman    = teal
 kubectl   = teal
-k9s       = teal
+k9s       = teal!
 helm      = teal
 docker-compose = teal
 
@@ -45,41 +46,41 @@ ansible   = purple
 pulumi    = purple
 
 # ── Editors ─────────────────────────────────────────────────────
-vim       = slate
-nvim      = slate
-emacs     = slate
-nano      = slate
-code      = slate
+vim       = slate!
+nvim      = slate!
+emacs     = slate!
+nano      = slate!
+code      = slate!
 
 # ── Databases ───────────────────────────────────────────────────
-psql      = navy
-mysql     = navy
-sqlite3   = navy
-redis-cli = navy
-mongosh   = navy
+psql      = navy!
+mysql     = navy!
+sqlite3   = navy!
+redis-cli = navy!
+mongosh   = navy!
 
 # ── AI tools ────────────────────────────────────────────────────
-claude    = indigo
-codex     = indigo
-aider     = indigo
+claude    = indigo!
+codex     = indigo!
+aider     = indigo!
 
 # ── VMs ─────────────────────────────────────────────────────────
-lima      = amber
+lima      = amber!
 vagrant   = amber
 multipass = amber
 
 # ── Monitoring ──────────────────────────────────────────────────
-htop      = magenta
-btop      = magenta
-top       = magenta
+htop      = magenta!
+btop      = magenta!
+top       = magenta!
 
 # ── Node.js ─────────────────────────────────────────────────────
-node      = green
+node      = green!
 npm       = green
 yarn      = green
 pnpm      = green
 
 # ── Python ──────────────────────────────────────────────────────
-python    = yellow
-python3   = yellow
-ipython   = yellow
+python    = yellow!
+python3   = yellow!
+ipython   = yellow!

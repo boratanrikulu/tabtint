@@ -87,10 +87,12 @@ export TABTINT_CONFIG="$HOME/.tabtint.conf"
 One rule per line - when you run `command`, the tab changes to `color`:
 
 ```
-ssh     = red
-kubectl = teal
-claude  = indigo
+kubectl = teal         # color persists after command exits
+ssh     = red!         # color resets when command exits
+claude  = indigo!      # color resets when command exits
 ```
+
+Add `!` after the color for interactive/long-running commands (ssh, editors, REPLs) where the color should disappear when you exit. Without `!`, the color persists so you can identify what the tab is for.
 
 ### Colors
 
@@ -165,15 +167,16 @@ If placed correctly and you still see warnings, please [open an issue](https://g
 
 ## How It Works
 
-tabtint uses zsh's `preexec` hook to set the tab color before each command:
+tabtint uses zsh's `preexec` and `precmd` hooks:
 
-- **Matched command** → tab turns that color and **stays** until the next command
-- **Unmatched command** → tab resets to default (or to `default` color if configured)
+1. **`preexec`** - fires before a command runs, sets the tab color
+2. **`precmd`** - fires after a command exits, resets color only for `!` (transient) rules
 
 ```
-kubectl get pods  → tab turns teal, stays teal after it finishes
-ls                → tab resets (no rule)
-ssh server        → tab turns red, stays red while connected
+kubectl get pods  -> teal, stays teal after it finishes
+ls                -> no rule, no change
+ssh server        -> red!, resets when you disconnect
+claude            -> indigo!, resets when you exit
 ```
 
 Commands prefixed with `sudo`, `env`, `nohup`, etc. are handled - `sudo docker ps` matches `docker`, not `sudo`.
