@@ -31,6 +31,7 @@ telnet    = red!
 docker    = teal
 podman    = teal
 kubectl   = teal
+k         = teal
 k9s       = teal!
 helm      = teal
 docker-compose = teal
