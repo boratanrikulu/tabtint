@@ -1,0 +1,85 @@
+# tabtint config
+#
+# Format:
+#   command = color        color the tab when this command runs
+#   default = color        idle tab color (omit to use terminal default)
+#   @name   = value        define a custom color name
+#
+# Colors can be:
+#   Named:  indigo, amber, teal, ... (run `tabtint-preview` to see all)
+#   Hex:    #RRGGBB
+#   RGB:    R,G,B
+#
+# After editing, run `tabtint-reload` or open a new tab.
+
+# ── Custom colors (optional) ────────────────────────────────────
+# Define your own, then use them below like any built-in color.
+# @solarblue = #268BD2
+# @dracula   = 189,147,249
+
+# ── Idle tab color (optional) ───────────────────────────────────
+# Uncomment to set a subtle base color instead of terminal default:
+# default = graphite
+
+# ── Remote access ───────────────────────────────────────────────
+ssh       = red
+mosh      = red
+telnet    = red
+
+# ── Containers & orchestration ──────────────────────────────────
+docker    = teal
+podman    = teal
+kubectl   = teal
+k9s       = teal
+helm      = teal
+docker-compose = teal
+
+# ── Cloud CLIs ──────────────────────────────────────────────────
+aws       = orange
+gcloud    = orange
+az        = orange
+
+# ── Infrastructure ──────────────────────────────────────────────
+terraform = purple
+ansible   = purple
+pulumi    = purple
+
+# ── Editors ─────────────────────────────────────────────────────
+vim       = slate
+nvim      = slate
+emacs     = slate
+nano      = slate
+code      = slate
+
+# ── Databases ───────────────────────────────────────────────────
+psql      = navy
+mysql     = navy
+sqlite3   = navy
+redis-cli = navy
+mongosh   = navy
+
+# ── AI tools ────────────────────────────────────────────────────
+claude    = indigo
+codex     = indigo
+aider     = indigo
+
+# ── VMs ─────────────────────────────────────────────────────────
+lima      = amber
+vagrant   = amber
+multipass = amber
+
+# ── Monitoring ──────────────────────────────────────────────────
+htop      = magenta
+btop      = magenta
+top       = magenta
+
+# ── Node.js ─────────────────────────────────────────────────────
+node      = green
+npm       = green
+yarn      = green
+pnpm      = green
+
+# ── Python ──────────────────────────────────────────────────────
+python    = yellow
+python3   = yellow
+ipython   = yellow
